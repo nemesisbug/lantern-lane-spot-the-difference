@@ -22,9 +22,18 @@ function announceScreen() {
     lastScreen = world.state.screen;
     if (world.state.screen === 'roundClear') audio.clear();
     if (world.state.screen === 'gameOver') audio.over();
-    if (world.state.screen === 'gameClear') audio.clear();
+    if (world.state.screen === 'gameClear') audio.fanfare();
   }
 }
+
+// Switching tabs mid-round pauses the clock instead of letting it run out
+// while nobody is looking.
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && world.state.screen === 'play') {
+    world.state.screen = 'paused';
+    announceScreen();
+  }
+});
 
 createInput(canvas, world, audio, announceScreen);
 

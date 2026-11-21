@@ -13,6 +13,13 @@ import { buildDossier } from './vendor/makefun-game.ts';
 const here = fileURLToPath(new URL('.', import.meta.url));
 const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
+// Fail loudly, before writing anything, when a deliverable is missing:
+// a half-copied hand-in is worse than no hand-in.
+for (const needed of ['game/index.html', 'game/src/main.js']) {
+  if (!existsSync(join(here, needed))) throw new Error(`missing deliverable: ${needed}`);
+}
+if (!existsSync(join(here, 'screenshots'))) throw new Error('missing deliverable: screenshots/');
+
 mkdirSync(out, { recursive: true });
 cpSync(join(here, 'game'), join(out, 'game'), { recursive: true });
 mkdirSync(join(out, 'screenshots'), { recursive: true });

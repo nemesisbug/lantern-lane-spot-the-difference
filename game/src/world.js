@@ -1,7 +1,7 @@
 // Lantern Lane's state: screens, rounds, finds, timer and score. This is
 // the only module that decides what a click means; render only shows it.
 
-import { LEVELS, SCORING } from './config.js';
+import { LEVELS, SCORING, STREAK } from './config.js';
 import { SCENES } from './scenes.js';
 
 export const SCREEN_TITLE = 'title';
@@ -18,6 +18,7 @@ export function createWorld() {
     found: new Set(),
     score: 0,
     misses: 0,
+    streak: 0,
     hintsUsed: 0,
     timeLeft: LEVELS[0].seconds,
     best: 0,
@@ -42,6 +43,7 @@ export function createWorld() {
   function startLevel(index) {
     state.levelIndex = index;
     state.found = new Set();
+    state.streak = 0;
     state.timeLeft = LEVELS[index].seconds;
     state.screen = SCREEN_PLAY;
     state.toast = '';
@@ -53,6 +55,7 @@ export function createWorld() {
   function startGame() {
     state.score = 0;
     state.misses = 0;
+    state.streak = 0;
     state.hintsUsed = 0;
     startLevel(0);
   }
@@ -77,9 +80,15 @@ export function createWorld() {
       const dy = y - diff.y;
       if (dx * dx + dy * dy <= (diff.r + 8) * (diff.r + 8)) {
         state.found.add(diff.id);
-        const gained = SCORING.findPoints + Math.round(state.timeLeft) * SCORING.timeBonusPerSecond;
+        state.streak += 1;
+        let gained = SCORING.findPoints + Math.round(state.timeLeft) * SCORING.timeBonusPerSecond;
+        let streakNote = '';
+        if (state.streak % STREAK.every === 0) {
+          gained += STREAK.bonus;
+          streakNote = ` 🔥 ${state.streak}-find streak +${STREAK.bonus}`;
+        }
         state.score += gained;
-        state.toast = `Found: ${diff.label}! +${gained}`;
+        state.toast = `Found: ${diff.label}! +${gained}${streakNote}`;
         state.toastUntil = state.elapsed + 2.2;
         state.effects.push({ kind: 'found', panel, x: diff.x, y: diff.y, r: diff.r, born: state.elapsed });
         if (state.found.size === diffs.length) {
@@ -91,6 +100,7 @@ export function createWorld() {
       }
     }
     state.misses += 1;
+    state.streak = 0;
     state.timeLeft = Math.max(0, state.timeLeft - SCORING.wrongClickSeconds);
     state.toast = `Not a difference — minus ${SCORING.wrongClickSeconds}s`;
     state.toastUntil = state.elapsed + 1.6;

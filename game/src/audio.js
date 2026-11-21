@@ -59,6 +59,10 @@ export function createAudio() {
     clear() {
       [523, 659, 784, 1047].forEach((freq, i) => tone(freq, i * 0.11, 0.3, 'sine', 0.2));
     },
+    fanfare() {
+      // The whole-game win: a longer rising fanfare, not the round chime.
+      [523, 659, 784, 1047, 784, 1047, 1319].forEach((freq, i) => tone(freq, i * 0.12, 0.32, 'sine', 0.2));
+    },
     over() {
       [392, 330, 262].forEach((freq, i) => tone(freq, i * 0.16, 0.3, 'triangle', 0.16));
     },

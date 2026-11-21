@@ -36,6 +36,12 @@ export const LEVELS = [
 
 export const FONT = '"Trebuchet MS", "Segoe UI", Verdana, sans-serif';
 
+// Crosshair steps for keyboard play: a nudge, and a long stride with Shift.
+export const CURSOR = { step: 14, fastStep: 48 };
+
+// A find streak earns a bonus every third consecutive find without a miss.
+export const STREAK = { every: 3, bonus: 25 };
+
 export const PALETTE = {
   night: '#141126',
   nightDeep: '#0d0b1c',

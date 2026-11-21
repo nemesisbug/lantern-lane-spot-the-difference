@@ -2,7 +2,7 @@
 // (the same spot in either picture counts), and the arrow keys drive a
 // crosshair so the whole game is playable without a mouse too.
 
-import { PANELS } from './config.js';
+import { CURSOR, PANELS } from './config.js';
 
 export function panelAt(clientX, clientY, canvas) {
   const rect = canvas.getBoundingClientRect();
@@ -66,7 +66,7 @@ export function createInput(canvas, world, audio, onScreenChange) {
       return;
     }
     if (state.screen === 'play') {
-      const step = event.shiftKey ? 48 : 14;
+      const step = event.shiftKey ? CURSOR.fastStep : CURSOR.step;
       if (key === 'ArrowLeft') { moveCursor(-step, 0); event.preventDefault(); }
       else if (key === 'ArrowRight') { moveCursor(step, 0); event.preventDefault(); }
       else if (key === 'ArrowUp') { moveCursor(0, -step); event.preventDefault(); }

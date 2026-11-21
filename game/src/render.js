@@ -209,6 +209,9 @@ export function createRenderer(canvas) {
     text('TIME', 880, 68, 12, PALETTE.muted);
     text(`SCORE ${state.score}`, 1060, 40, 20, PALETTE.cream, 'left', true);
     text(`misses ${state.misses} · best ${state.best}`, 1060, 64, 13, PALETTE.muted);
+    if (state.streak >= 2) {
+      text(`🔥 streak ×${state.streak}`, 1060, 82, 13, PALETTE.gold, 'left', true);
+    }
   }
 
   // The toast lives in the strip below the panels, so it never covers art.

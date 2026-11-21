@@ -23,3 +23,19 @@ export function scatter(seed, count, x, y, width, height) {
   }
   return points;
 }
+
+// A stable numeric seed from a name, so a scene's scatter can be named
+// instead of numbered: hashSeed('lantern-market') always gives the same sky.
+export function hashSeed(name) {
+  let hash = 2166136261;
+  for (let index = 0; index < name.length; index += 1) {
+    hash ^= name.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
+
+// A seeded integer in [min, max], for picking a deterministic variant.
+export function range(seed, min, max) {
+  return min + Math.floor(makeRandom(seed)() * (max - min + 1));
+}

@@ -7,7 +7,7 @@
 // A difference is { id, x, y, r, label }: its spot in panel-local pixels
 // (panels are 600 x 668), the click radius, and the name shown when found.
 
-import { scatter } from './random.js';
+import { hashSeed, scatter } from './random.js';
 
 function circle(ctx, x, y, r, color) {
   ctx.fillStyle = color;
@@ -118,7 +118,7 @@ function cat(ctx, x, y, color) {
 }
 
 // ---------------------------------------------------------------- scene 1
-const MARKET_STARS = scatter(11, 26, 20, 16, 560, 120);
+const MARKET_STARS = scatter(hashSeed('lantern-market'), 26, 20, 16, 560, 120);
 
 function drawMarket(ctx, variant) {
   sky(ctx, '#241a4d', '#c96f3f');
@@ -262,7 +262,7 @@ function drawMarket(ctx, variant) {
 }
 
 // ---------------------------------------------------------------- scene 2
-const POND_STARS = scatter(23, 18, 20, 14, 560, 110);
+const POND_STARS = scatter(hashSeed('koi-pond-garden'), 18, 20, 14, 560, 110);
 
 function koi(ctx, x, y, angle, color) {
   ctx.save();
@@ -410,7 +410,7 @@ function drawPond(ctx, variant) {
 }
 
 // ---------------------------------------------------------------- scene 3
-const ROOF_STARS = scatter(37, 30, 16, 14, 568, 130);
+const ROOF_STARS = scatter(hashSeed('firefly-rooftops'), 30, 16, 14, 568, 130);
 
 function building(ctx, x, y, w, h, color, litWindows, darkOne) {
   rect(ctx, x, y, w, h, color);
